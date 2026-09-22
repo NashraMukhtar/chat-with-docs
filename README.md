@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Chat with Docs
+
+Chat with your documents using a RAG (Retrieval-Augmented Generation) pipeline built on Next.js, Postgres with pgvector, the Vercel AI SDK, and Google Gemini.
+
+## Features
+
+- Document chat powered by a RAG pipeline (Gemini embeddings + pgvector search)
+- Email/password authentication with session cookies (JWT via `jose`, hashed passwords via `bcryptjs`)
+- PostgreSQL database with Drizzle ORM
+
+## Tech Stack
+
+- [Next.js 16](https://nextjs.org) (App Router)
+- [Vercel AI SDK](https://ai-sdk.dev) + [Google Gemini](https://ai.google.dev)
+- [PostgreSQL](https://www.postgresql.org) with [pgvector](https://github.com/pgvector/pgvector) via [Supabase](https://supabase.com)
+- [Drizzle ORM](https://orm.drizzle.team)
+- [Tailwind CSS](https://tailwindcss.com)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js 20+
+- A PostgreSQL database with the `vector` extension enabled (Supabase supports this out of the box)
+- A Gemini API key
+
+### Setup
+
+1. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+2. Create your environment file from the example:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+3. Fill in the values in `.env`:
+
+   - `DATABASE_URL` — Postgres connection string
+   - `SUPABASE_URL` — your Supabase project URL
+   - `SUPABASE_SERVICE_ROLE_KEY` — Supabase service role key
+   - `GEMINI_API_KEY` — Google Gemini API key
+   - `AUTH_SECRET` — secret used to sign session JWTs
+   - `DEMO_EMAIL` / `DEMO_PASSWORD` — credentials for the seeded demo user
+
+4. Run the database migrations:
+
+   ```bash
+   npx drizzle-kit migrate
+   ```
+
+5. (Optional) Seed the demo user:
+
+   ```bash
+   npx tsx src/db/seed.ts
+   ```
+
+6. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev` — start the development server
+- `npm run build` — production build
+- `npm run start` — start the production server
+- `npm run lint` — run ESLint
+
+## Database
+
+Migrations live in [`drizzle/`](drizzle/) and the schema is defined in [`src/db/schema.ts`](src/db/schema.ts).
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Drizzle ORM Documentation](https://orm.drizzle.team/docs)
+- [Vercel AI SDK Documentation](https://ai-sdk.dev/docs)
